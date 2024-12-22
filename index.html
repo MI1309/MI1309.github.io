@@ -1,1 +1,173 @@
-maintanence
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Body</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        :root {
+            --white: hsl(0, 0%, 100%);
+            --black: hsl(240, 15%, 9%);
+            --paragraph: hsl(0, 0%, 83%);
+            --line: hsl(240, 9%, 17%);
+            --primary: hsl(189, 92%, 58%);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: hsla(240, 15%, 9%, 1);
+            background-image: radial-gradient(at 88% 50%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+                radial-gradient(at 49% 50%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+                radial-gradient(at 14% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
+                radial-gradient(at 0% 64%, hsl(189, 99%, 26%) 0px, transparent 85%),
+                radial-gradient(at 41% 94%, hsl(189, 97%, 36%) 0px, transparent 85%),
+                radial-gradient(at 100% 99%, hsl(188, 94%, 13%) 0px, transparent 85%);
+            color: var(--white);
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            perspective: 800px;
+        }
+
+        .crystal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            opacity: 0;
+            transform-origin: bottom center;
+            transform: translate(-50%, -50%) rotateX(45deg) rotateZ(0deg);
+            animation: spin 4s linear infinite, emerge 2s ease-in-out infinite alternate,
+                fadeIn 0.3s ease-out forwards;
+            border-radius: 10px;
+            visibility: hidden;
+        }
+
+        @keyframes spin {
+            from {
+                transform: translate(-50%, -50%) rotateX(45deg) rotateZ(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotateX(45deg) rotateZ(360deg);
+            }
+        }
+
+        @keyframes emerge {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                visibility: visible;
+                opacity: 0.8;
+            }
+        }
+
+        .crystal:nth-child(1) {
+            background: linear-gradient(45deg, #003366, #336699);
+            animation-delay: 0s;
+        }
+
+        .crystal:nth-child(2) {
+            background: linear-gradient(45deg, #003399, #3366cc);
+            animation-delay: 0.3s;
+        }
+
+        .crystal:nth-child(3) {
+            background: linear-gradient(45deg, #0066cc, #3399ff);
+            animation-delay: 0.6s;
+        }
+
+        .crystal:nth-child(4) {
+            background: linear-gradient(45deg, #0099ff, #66ccff);
+            animation-delay: 0.9s;
+        }
+
+        .crystal:nth-child(5) {
+            background: linear-gradient(45deg, #33ccff, #99ccff);
+            animation-delay: 1.2s;
+        }
+
+        .crystal:nth-child(6) {
+            background: linear-gradient(45deg, #66ffff, #ccffff);
+            animation-delay: 1.5s;
+        }
+
+        /* Efek transisi pada elemen dengan kelas .content */
+        .content {
+            opacity: 0;
+            display: none;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .content.loaded {
+            opacity: 1;
+            display: block;
+            /* Pastikan tampil saat loading selesai */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container loading">
+        <div class="loader loading">
+            <div class="crystal loading"></div>
+            <div class="crystal loading"></div>
+            <div class="crystal loading"></div>
+            <div class="crystal loading"></div>
+            <div class="crystal loading"></div>
+            <div class="crystal loading"></div>
+        </div>
+    </div>
+    <div id="content" class="content">
+        <h1>Konten Selesai Dimuat</h1>
+        <div class="container-fluid">
+            tes
+        </div>
+    </div>
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                // Hapus elemen loading setelah 3 detik
+                document.querySelectorAll('.loading').forEach(el => el.remove());
+
+                // Tampilkan konten setelah loading selesai dengan transisi
+                const content = document.getElementById('content');
+                content.classList.add('loaded');
+            })
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
