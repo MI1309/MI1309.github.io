@@ -1,0 +1,20 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" rx="24" fill="#0B1425"/>
+  <rect x="45" y="55" width="710" height="390" rx="20" fill="#111F34" stroke="#64E1FF" stroke-opacity="0.35"/>
+  <rect x="72" y="82" width="160" height="18" rx="9" fill="#64E1FF" fill-opacity="0.8"/>
+  <rect x="72" y="120" width="220" height="12" rx="6" fill="#C7D8F7" fill-opacity="0.6"/>
+  <rect x="72" y="148" width="180" height="12" rx="6" fill="#C7D8F7" fill-opacity="0.4"/>
+  <rect x="72" y="210" width="260" height="165" rx="18" fill="url(#card1)"/>
+  <rect x="360" y="210" width="350" height="76" rx="18" fill="#152847"/>
+  <rect x="360" y="304" width="350" height="71" rx="18" fill="#152847"/>
+  <rect x="420" y="235" width="120" height="18" rx="9" fill="#64E1FF"/>
+  <rect x="420" y="265" width="220" height="10" rx="5" fill="#C7D8F7" fill-opacity="0.5"/>
+  <rect x="420" y="329" width="110" height="18" rx="9" fill="#8A7DFF"/>
+  <rect x="420" y="359" width="210" height="10" rx="5" fill="#C7D8F7" fill-opacity="0.5"/>
+  <defs>
+    <linearGradient id="card1" x1="72" y1="210" x2="332" y2="375" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#64E1FF"/>
+      <stop offset="1" stop-color="#8A7DFF"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,11 +1,22 @@
-// script.js
-window.addEventListener("load", function () {
-  const loading = document.getElementById("loading");
-  const content = document.getElementById("content");
+document.addEventListener("DOMContentLoaded", () => {
+  const yearEl = document.getElementById("year");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
 
-  // Hilangkan elemen loading setelah 1 detik
-  setTimeout(() => {
-    loading.style.display = "none";
-    content.style.display = "block";
-  }, 1000);
+  const revealItems = document.querySelectorAll(".reveal");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  revealItems.forEach((item) => observer.observe(item));
 });
