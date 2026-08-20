@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin archive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container py-4">
+        <h1>Admin: Archive Manager</h1>
+        <p>Gunakan halaman ini untuk mengelola konten archive yang tampil di halaman depan.</p>
+
+        <div>
+            <button id="logout" class="btn btn-sm btn-outline-secondary">Logout</button>
+        </div>
+
+        <hr />
+
+        <h3>Current Archive (JSON)</h3>
+        <textarea id="archiveJson" style="width:100%;height:320px;font-family:monospace"></textarea>
+        <div class="mt-2">
+            <button id="save" class="btn btn-primary">Save Archive</button>
+            <span id="status" style="margin-left:1rem"></span>
+        </div>
+    </div>
+
+    <script>
+    async function loadArchive() {
+        const res = await fetch('/api/archive');
+        if (res.ok) {
+            const data = await res.json();
+            document.getElementById('archiveJson').value = JSON.stringify(data, null, 2);
+        } else {
+            document.getElementById('archiveJson').value = '[]';
+        }
+    }
+    document.getElementById('save').addEventListener('click', async () => {
+        const txt = document.getElementById('archiveJson').value;
+        try {
+            const json = JSON.parse(txt);
+            const res = await fetch('/api/admin-archive', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(json) });
+            const j = await res.json();
+            document.getElementById('status').textContent = res.ok ? 'Dispatched' : (j.error || 'Failed');
+        } catch (e) {
+            document.getElementById('status').textContent = 'Invalid JSON';
+        }
+    });
+
+    document.getElementById('logout').addEventListener('click', async () => {
+        await fetch('/api/admin/logout', { method: 'POST' });
+        window.location.href = window.location.pathname.replace(/\/project\/?$/, '/login');
+    });
+
+    loadArchive();
+    </script>
+</body>
+</html>

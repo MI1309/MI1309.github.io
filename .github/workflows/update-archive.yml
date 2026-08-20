@@ -1,0 +1,27 @@
+name: Update archive via dispatch
+
+on:
+  repository_dispatch:
+    types: [update-archive]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Write archive file
+        run: |
+          mkdir -p data
+          echo "$PAYLOAD" | jq -r '.archive' > data/archive.json
+        env:
+          PAYLOAD: "${{ toJson(github.event.client_payload) }}"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/archive.json
+          git commit -m "Update archive via admin dispatch" || echo "no changes"
+          git push

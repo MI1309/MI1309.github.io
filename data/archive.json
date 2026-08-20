@@ -1,0 +1,14 @@
+[
+	{
+		"title": "Blog Post: Secure Deployment",
+		"description": "Panduan ringkas menerapkan situs statis yang aman.",
+		"date": "2025-06-01",
+		"url": "https://example.com/post/secure-deployment"
+	},
+	{
+		"title": "Project: Tiny CV App",
+		"description": "A simple static CV generator with printable layout.",
+		"date": "2024-12-15",
+		"url": "https://example.com/project/tiny-cv"
+	}
+]
