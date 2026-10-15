@@ -17,50 +17,55 @@ export default function ScrollEffects() {
     document.querySelectorAll(".reveal").forEach((item) => {
       revealObserver.observe(item);
     });
-    const sections = document.querySelectorAll(".content-section");
-    const navItems = document.querySelectorAll(".side-nav .nav-item");
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          navItems.forEach((item) => {
-            item.classList.toggle(
-              "active",
-              item.hash === `#${entry.target.id}`,
-            );
-          });
-        });
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
+    const sections = Array.from(
+      document.querySelectorAll('main[data-section="home"] .content-section'),
     );
-    sections.forEach((section) => sectionObserver.observe(section));
-    const roleCycler = document.getElementById("role-cycler");
-    const roles = ["Cyber Security", "Full Stack"];
-    let roleIndex = 0;
-    let characterIndex = 0;
-    let deleting = false;
-    let timer;
-    const cycleRole = () => {
-      const role = roles[roleIndex];
-      characterIndex += deleting ? -1 : 1;
-      if (roleCycler) roleCycler.textContent = role.slice(0, characterIndex);
-      if (characterIndex === role.length) {
-        deleting = true;
-        timer = setTimeout(cycleRole, 1400);
-      } else if (characterIndex === 0) {
-        deleting = false;
-        roleIndex = (roleIndex + 1) % roles.length;
-        timer = setTimeout(cycleRole, 350);
-      } else {
-        timer = setTimeout(cycleRole, deleting ? 60 : 110);
+    const navItems = document.querySelectorAll(".side-nav [data-section-target]");
+    let scrollFrame = 0;
+    const updateActiveSection = () => {
+      if (!sections.length) return;
+
+      const activationLine = window.innerHeight * 0.42;
+      let activeSection = sections[0];
+
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= activationLine) {
+          activeSection = section;
+        }
+      });
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        activeSection = sections[sections.length - 1];
       }
+
+      navItems.forEach((item) => {
+        const isActive = item.dataset.sectionTarget === activeSection.id;
+        item.classList.toggle("active", isActive);
+        if (isActive) {
+          item.setAttribute("aria-current", "location");
+        } else {
+          item.removeAttribute("aria-current");
+        }
+      });
     };
-    timer = setTimeout(cycleRole, 600);
+    const scheduleActiveSectionUpdate = () => {
+      cancelAnimationFrame(scrollFrame);
+      scrollFrame = requestAnimationFrame(updateActiveSection);
+    };
+
+    if (sections.length) {
+      window.addEventListener("scroll", scheduleActiveSectionUpdate, { passive: true });
+      window.addEventListener("resize", scheduleActiveSectionUpdate);
+      window.addEventListener("hashchange", scheduleActiveSectionUpdate);
+      updateActiveSection();
+    }
     return () => {
       document.documentElement.classList.remove("has-js");
       revealObserver.disconnect();
-      sectionObserver.disconnect();
-      clearTimeout(timer);
+      window.removeEventListener("scroll", scheduleActiveSectionUpdate);
+      window.removeEventListener("resize", scheduleActiveSectionUpdate);
+      window.removeEventListener("hashchange", scheduleActiveSectionUpdate);
+      cancelAnimationFrame(scrollFrame);
     };
   }, []);
   return null;

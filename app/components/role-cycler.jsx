@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-const roles = ["Web Development", "Cybersecurity", "Japanese Learning"];
+const roles = ["Web Development", "Cyber security", "Japanese Language"];
 export function RoleCycler() {
   useEffect(() => {
     const text = document.getElementById("role-cycler");
@@ -20,17 +20,17 @@ export function RoleCycler() {
       text.textContent = role.slice(0, characterIndex);
       if (characterIndex === role.length) {
         deleting = true;
-        timer = setTimeout(cycleRole, 1400);
+        timer = setTimeout(cycleRole, 2100);
       } else if (characterIndex === 0) {
         deleting = false;
         roleIndex = (roleIndex + 1) % roles.length;
-        timer = setTimeout(cycleRole, 350);
+        timer = setTimeout(cycleRole, 500);
       } else {
-        timer = setTimeout(cycleRole, deleting ? 60 : 110);
+        timer = setTimeout(cycleRole, deleting ? 90 : 135);
       }
     };
     text.textContent = "";
-    timer = setTimeout(cycleRole, 600);
+    timer = setTimeout(cycleRole, 700);
     return () => clearTimeout(timer);
   }, []);
   return (

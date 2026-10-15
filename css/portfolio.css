@@ -25,6 +25,19 @@ body.portfolio-body {
   grid-template-columns: 40% 60%;
 }
 
+.mi-site-wide {
+  display: block;
+}
+
+.mi-site-wide .mi-content-column {
+  padding: 60px clamp(24px, 5vw, 80px);
+}
+
+.mi-site-wide .mi-main {
+  width: 100%;
+  max-width: none;
+}
+
 .mi-site a {
   color: inherit;
   text-decoration: none;
@@ -71,9 +84,37 @@ body.portfolio-body {
   font-size: 17px;
 }
 
+.mi-site .side-nav.mi-nav .nav-item.active {
+  color: var(--mi-accent);
+  font-weight: 700;
+  transform: translateX(4px);
+}
+
+.mi-site .side-nav.mi-nav .nav-item.active .nav-line {
+  width: 72px;
+  height: 2px;
+  background: var(--mi-accent);
+  box-shadow: 0 0 12px rgba(125, 249, 255, 0.42);
+}
+
 .mi-site .sidebar-social a {
   width: 32px;
   height: 32px;
+}
+
+.mi-site .sidebar-social .social-mark {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  color: var(--mi-text);
+}
+
+.mi-site .sidebar-social .social-mark svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
 
 .sr-only {
@@ -100,6 +141,10 @@ body.portfolio-body {
 .hero-role #role-cycler {
   min-width: 1ch;
   color: var(--mi-accent);
+}
+
+.mi-site .hero-role #role-cycler {
+  min-width: 18ch;
 }
 
 .hero-role .cursor {
@@ -214,72 +259,101 @@ body.portfolio-body {
 .mi-home-project-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 0;
   margin-bottom: 20px;
 }
 
 .mi-home-project-list .mi-project-card {
-  min-height: 310px;
+  min-height: 0;
   width: 100%;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  align-items: stretch;
-  gap: 0;
-  padding: 0;
-  overflow: hidden;
-  border-radius: 20px;
-  background: linear-gradient(180deg, rgba(17, 27, 42, 0.85), rgba(11, 18, 29, 0.96));
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  padding: 18px 0;
+  border: 0;
+  border-bottom: 1px solid var(--mi-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .mi-project-visual {
   min-width: 0;
   display: block;
+  aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: #d8e8f0;
+  border-radius: 4px;
+  background: #101a2a;
 }
 
 .mi-project-visual img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 350ms ease;
+  object-fit: contain;
+  padding: 5px;
+  transition: transform 250ms ease;
 }
 
 .mi-project-card:hover .mi-project-visual img {
-  transform: scale(1.025);
+  transform: scale(1.04);
 }
 
 .mi-project-content {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  gap: 17px;
-  padding: 24px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
 }
 
 .mi-home-project-list .mi-project-card h3 {
-  font-size: 23px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.mi-project-row-title {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.mi-project-external {
+  flex: none;
+  color: var(--mi-muted) !important;
+  font-size: 14px;
+}
+
+.mi-project-external:hover {
+  color: var(--mi-accent) !important;
+}
+
+.mi-home-project-list .mi-project-summary {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .mi-home-project-list .mi-tech-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 5px 14px;
-  margin: auto 0 0;
-  padding-left: 16px;
-  list-style: disc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
 }
 
 .mi-home-project-list .mi-tech-list li {
-  padding: 0;
+  padding: 4px 8px;
   border: 0;
-  color: var(--mi-muted);
-  font-family: "Inter", sans-serif;
-  font-size: 11px;
-}
-
-.mi-home-project-list .mi-tech-list li::marker {
+  border-radius: 999px;
+  background: rgba(125, 249, 255, 0.1);
   color: var(--mi-accent);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
 }
 
 .mi-kicker {
@@ -398,6 +472,98 @@ body.portfolio-body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 16px;
+}
+
+.mi-archive-page {
+  width: 100%;
+}
+
+.mi-archive-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-top: 1px solid var(--mi-line);
+  scrollbar-color: var(--mi-faint) transparent;
+}
+
+.mi-archive-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.mi-archive-table th {
+  padding: 14px 16px;
+  color: var(--mi-faint);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.mi-archive-table td {
+  padding: 20px 16px;
+  border-top: 1px solid var(--mi-line);
+  color: var(--mi-muted);
+  vertical-align: top;
+}
+
+.mi-archive-table td:first-child {
+  color: var(--mi-accent);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.mi-archive-title {
+  margin: 0 0 5px;
+  color: var(--mi-text);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mi-archive-title-link {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: var(--mi-text) !important;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mi-archive-title-link:hover {
+  color: var(--mi-accent) !important;
+}
+
+.mi-archive-description {
+  max-width: 440px;
+  margin: 0;
+  color: var(--mi-muted);
+  font-size: 13px;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mi-archive-table .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mi-archive-table .tag {
+  padding: 3px 7px;
+  border: 1px solid var(--mi-line);
+  border-radius: 3px;
+  color: var(--mi-muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.mi-archive-link {
+  color: var(--mi-accent) !important;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .mi-project-card {
@@ -569,6 +735,27 @@ body.portfolio-body {
 
 .mi-back-link:hover {
   color: var(--mi-accent) !important;
+}
+
+.mi-projects-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  color: var(--mi-accent) !important;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  transition: color 180ms ease;
+}
+
+.mi-projects-back:hover {
+  color: var(--mi-text) !important;
+}
+
+.mi-projects-back:focus-visible {
+  outline: 2px solid var(--mi-text);
+  outline-offset: 3px;
 }
 
 .mi-link-row {
@@ -813,7 +1000,9 @@ body.portfolio-body {
 }
 
 .admin-form input,
-.admin-editor textarea {
+.admin-editor textarea,
+.admin-project-form input,
+.admin-project-form textarea {
   width: 100%;
   border: 1px solid var(--mi-line);
   border-radius: 4px;
@@ -822,9 +1011,16 @@ body.portfolio-body {
   font: inherit;
 }
 
-.admin-form input {
+.admin-form input,
+.admin-project-form input {
   min-height: 46px;
   padding: 10px 12px;
+}
+
+.admin-project-form textarea {
+  min-height: 96px;
+  padding: 10px 12px;
+  resize: vertical;
 }
 
 .admin-editor textarea {
@@ -839,6 +1035,8 @@ body.portfolio-body {
 
 .admin-form input:focus-visible,
 .admin-editor textarea:focus-visible,
+.admin-project-form input:focus-visible,
+.admin-project-form textarea:focus-visible,
 .admin-submit:focus-visible,
 .admin-secondary:focus-visible {
   outline: 2px solid var(--mi-accent);
@@ -867,6 +1065,96 @@ body.portfolio-body {
   border-color: var(--mi-line);
   background: transparent;
   color: var(--mi-text);
+}
+
+.admin-secondary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.admin-danger {
+  border-color: rgba(255, 130, 130, 0.4);
+  color: #ffb4b4;
+}
+
+.admin-toolbar-actions,
+.admin-project-row-actions,
+.admin-project-form-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-project-count {
+  margin: 0;
+  color: var(--mi-faint);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.admin-project-form {
+  display: grid;
+  gap: 18px;
+  margin: 20px 0 28px;
+  padding: 20px 0;
+  border-top: 1px solid var(--mi-line);
+  border-bottom: 1px solid var(--mi-line);
+}
+
+.admin-project-form h2,
+.admin-project-row h2 {
+  margin: 0;
+  color: var(--mi-text);
+  font-size: 16px;
+}
+
+.admin-project-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-project-fields label {
+  display: grid;
+  gap: 6px;
+  color: var(--mi-text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin-project-field-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-project-list {
+  border-top: 1px solid var(--mi-line);
+}
+
+.admin-project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--mi-line);
+}
+
+.admin-project-row-copy {
+  min-width: 0;
+}
+
+.admin-project-row-copy p {
+  overflow: hidden;
+  margin: 4px 0 0;
+  color: var(--mi-muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-project-row-actions {
+  flex: none;
 }
 
 .admin-submit:disabled {
@@ -1018,17 +1306,36 @@ body.portfolio-body {
   }
 
   .mi-home-project-list .mi-project-card {
-    grid-template-columns: 1fr;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 12px;
     min-height: 0;
   }
 
-  .mi-project-visual {
-    height: 220px;
+  .mi-home-project-list .mi-project-visual {
+    height: auto;
     min-height: 0;
   }
 
-  .mi-project-content {
-    padding: 20px;
+  .mi-home-project-list .mi-project-content {
+    padding: 0;
+  }
+
+  .mi-home-project-list .mi-project-card h3 {
+    font-size: 14px;
+  }
+
+  .mi-home-project-list .mi-project-summary {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .mi-home-project-list .mi-tech-list {
+    gap: 4px;
+  }
+
+  .mi-home-project-list .mi-tech-list li {
+    padding: 3px 6px;
+    font-size: 9px;
   }
 
   .mi-footer {
@@ -1045,6 +1352,25 @@ body.portfolio-body {
   .admin-actions {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .admin-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-project-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-project-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-project-row-copy p {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .admin-editor textarea {

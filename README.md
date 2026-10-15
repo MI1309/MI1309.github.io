@@ -26,9 +26,9 @@ Open `http://localhost:3000`. Production static output is generated with `npm ru
 - `/projects/` — project list
 - `/projects/jbook/` — JBook case study, statically generated from `app/data/projects.js`
 - `/about/`, `/contact/`, and `/security-lab/`
-- `/archive/` — legacy editable archive; new items are managed through its existing admin workflow and `data/archive.json`
+- `/archive/` — archive table backed by the same admin-managed `data/archive.json` source as `/projects/`
 
-Portfolio project content is maintained in `app/data/projects.js`. The archive starts empty because the entries previously present used `example.com` placeholder links. Security Lab sections are intentionally marked unpublished until reproducible, authorized material is available.
+Project-list metadata is managed through the Project Manager at `data/archive.json`; the JBook case-study content remains in `app/data/projects.js`. Security Lab sections are intentionally marked unpublished until reproducible, authorized material is available.
 
 The active home route is `app/page.jsx`. Next.js generates the static HTML under `out/` during the build; no hand-authored root `index.html` is used.
 
@@ -38,15 +38,25 @@ The static portfolio does not require environment variables. The separate Expres
 
 ## Deployment
 
-GitHub Actions deploys the site to GitHub Pages and Vercel on pushes to `main` or `master`. GitHub Pages uses the static export in `out/`; Vercel uses its CLI prebuilt deployment workflow.
+### First-time Vercel setup
 
-To enable Vercel deployment, create/import the Vercel project once, then add these repository Actions secrets under **Settings → Secrets and variables → Actions**:
+The repository deploys to Vercel through the GitHub Actions workflow in `.github/workflows/deploy-vercel.yml`. The workflow uses the Vercel CLI to build and publish a production deployment.
 
-- `VERCEL_TOKEN` — a Vercel access token
-- `VERCEL_ORG_ID` — the Vercel team or account ID
-- `VERCEL_PROJECT_ID` — the linked Vercel project ID
+1. Push this repository to GitHub, with the production branch named `main` or `master`.
+2. In the Vercel dashboard, create a project for this repository. Use the repository root as the Root Directory and keep the detected Next.js build settings. The workflow reads the project settings from Vercel, so the project must exist before the first Actions run.
+3. Create a Vercel access token in **Account Settings → Tokens**. Make sure the token has access to the account or team that owns the project.
+4. Get the Vercel organization and project IDs. From the repository root, run `npx vercel link` and select the same account/team and project. The generated `.vercel/project.json` contains `orgId` and `projectId`; `.vercel` is ignored by Git. Alternatively, find the project ID in the Vercel project settings and the organization ID in the linked project metadata.
+5. In the GitHub repository, open **Settings → Secrets and variables → Actions → New repository secret**. Add these three secrets:
+	- `VERCEL_TOKEN`: the token created in step 3
+	- `VERCEL_ORG_ID`: the `orgId` from the linked Vercel project
+	- `VERCEL_PROJECT_ID`: the `projectId` from the linked Vercel project
 
-The workflow runs after a commit is pushed to `main` or `master`; a local commit by itself cannot trigger a hosted deployment. It can also be started manually through the Actions tab. No Vercel deployment or remote push was run as part of this work.
+6. Run the first deployment from GitHub: open **Actions → Deploy to Vercel → Run workflow**, select the production branch, then start the workflow. Open the successful run to find the deployment result and URL.
+7. After the first successful run, every push to `main` or `master` automatically starts a new production deployment. A local commit does not deploy until it is pushed to GitHub.
+
+For this guide, GitHub Actions is the deployment trigger. If Vercel's Git integration is also set to deploy this branch, pushes may create an additional deployment outside this workflow; use only one automatic deployment path to avoid duplicate builds. The static portfolio does not need environment variables by default. Configure server-side variables in Vercel only if enabling the admin/API features; see [README_ADMIN.md](README_ADMIN.md).
+
+GitHub Pages has a separate workflow and also deploys on pushes to `main` or `master`. That deployment is independent of Vercel.
 
 ## Checks
 

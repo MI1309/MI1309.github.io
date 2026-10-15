@@ -96,9 +96,9 @@ export default function HomePage() {
             <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
-        <a className="mi-text-link" href="#projects">
-          Semua proyek <span aria-hidden="true">↓</span>
-        </a>
+        <Link className="mi-text-link" href="/projects/">
+          Semua proyek <span aria-hidden="true">↗</span>
+        </Link>
       </section>
     </PageFrame>
   );
