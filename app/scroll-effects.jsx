@@ -1,11 +1,8 @@
 "use client";
-
 import { useEffect } from "react";
-
 export default function ScrollEffects() {
   useEffect(() => {
     document.documentElement.classList.add("has-js");
-
     const revealObserver = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach((entry) => {
@@ -17,15 +14,11 @@ export default function ScrollEffects() {
       },
       { threshold: 0.15 },
     );
-
     document.querySelectorAll(".reveal").forEach((item) => {
       revealObserver.observe(item);
     });
-
     const sections = document.querySelectorAll(".content-section");
-    const navItems = document.querySelectorAll<HTMLAnchorElement>(
-      ".side-nav .nav-item",
-    );
+    const navItems = document.querySelectorAll(".side-nav .nav-item");
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -40,21 +33,17 @@ export default function ScrollEffects() {
       },
       { rootMargin: "-40% 0px -55% 0px" },
     );
-
     sections.forEach((section) => sectionObserver.observe(section));
-
     const roleCycler = document.getElementById("role-cycler");
     const roles = ["Cyber Security", "Full Stack"];
     let roleIndex = 0;
     let characterIndex = 0;
     let deleting = false;
-    let timer: ReturnType<typeof setTimeout>;
-
+    let timer;
     const cycleRole = () => {
       const role = roles[roleIndex];
       characterIndex += deleting ? -1 : 1;
       if (roleCycler) roleCycler.textContent = role.slice(0, characterIndex);
-
       if (characterIndex === role.length) {
         deleting = true;
         timer = setTimeout(cycleRole, 1400);
@@ -66,9 +55,7 @@ export default function ScrollEffects() {
         timer = setTimeout(cycleRole, deleting ? 60 : 110);
       }
     };
-
     timer = setTimeout(cycleRole, 600);
-
     return () => {
       document.documentElement.classList.remove("has-js");
       revealObserver.disconnect();
@@ -76,6 +63,5 @@ export default function ScrollEffects() {
       clearTimeout(timer);
     };
   }, []);
-
   return null;
 }

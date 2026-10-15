@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const helmet = require('helmet');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,11 +33,39 @@ app.use((req, res, next) => {
   if (req.path.startsWith('/admin')) return next();
   express.static(publicRoot)(req, res, next);
 });
+app.use('/_next', express.static(path.join(__dirname, 'out', '_next')));
 
 // Helper: check authenticated
 function requireAuth(req, res, next) {
   if (req.session && req.session.authenticated) return next();
   return res.status(401).json({ error: 'Unauthorized' });
+}
+
+function sendAdminPage(res, pagePath) {
+  const page = fs.readFileSync(pagePath, 'utf8');
+  const scriptHashes = Array.from(
+    page.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi),
+    ([, script]) => script,
+  )
+    .filter((script) => script.trim())
+    .map((script) => `'sha256-${crypto.createHash('sha256').update(script).digest('base64')}'`);
+
+  res.setHeader(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      `script-src 'self' ${scriptHashes.join(' ')}`,
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "img-src 'self' data:",
+      "connect-src 'self'",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "frame-ancestors 'self'",
+      "form-action 'self'",
+    ].join('; '),
+  );
+  res.sendFile(pagePath);
 }
 
 // API: public archive
@@ -54,7 +83,7 @@ app.get('/api/archive', (req, res) => {
 });
 
 // Admin login endpoint (client must access the hidden admin URL to reach login page)
-app.post('/api/admin/login', async (req, res) => {
+app.post(['/api/admin/login', '/api/login'], async (req, res) => {
   const { password } = req.body || {};
   if (!password) return res.status(400).json({ error: 'Password required' });
   try {
@@ -70,7 +99,7 @@ app.post('/api/admin/login', async (req, res) => {
 });
 
 // Update archive (authenticated)
-app.post('/api/admin/archive', requireAuth, (req, res) => {
+app.post(['/api/admin/archive', '/api/admin-archive'], requireAuth, (req, res) => {
   const data = req.body;
   if (!data) return res.status(400).json({ error: 'No data' });
   try {
@@ -121,18 +150,18 @@ app.post('/api/admin/archive', requireAuth, (req, res) => {
 
 // Serve admin login and project pages only under the hidden admin route
 app.get(`/admin/${ADMIN_ROUTE}/login`, (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin', 'login.html'));
+  sendAdminPage(res, path.join(__dirname, 'out', 'admin', 'login', 'index.html'));
 });
 
 app.get(`/admin/${ADMIN_ROUTE}/project`, (req, res) => {
   if (!req.session || !req.session.authenticated) {
     return res.redirect(`/admin/${ADMIN_ROUTE}/login`);
   }
-  res.sendFile(path.join(__dirname, 'admin', 'project', 'index.html'));
+  sendAdminPage(res, path.join(__dirname, 'out', 'admin', 'project', 'index.html'));
 });
 
 // Logout
-app.post('/api/admin/logout', (req, res) => {
+app.post(['/api/admin/logout', '/api/logout'], (req, res) => {
   req.session.destroy(() => {
     res.json({ success: true });
   });
