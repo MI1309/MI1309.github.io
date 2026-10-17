@@ -7,8 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "postbuild": "node scripts/copy-og-image.mjs",
-    "start": "node server.js",
-    "admin:start": "node server.js"
+    "start": "next start",
+    "admin:start": "next start"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
