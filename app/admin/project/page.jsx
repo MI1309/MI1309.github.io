@@ -1,3 +1,6 @@
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import AdminProjectEditor from "./editor";
 import ResumeManager from "./resume-manager";
 
@@ -6,7 +9,15 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function AdminProjectPage() {
+export default async function AdminProjectPage() {
+  const token = (await cookies()).get("mi_auth")?.value;
+  try {
+    if (!token || !process.env.JWT_SECRET) throw new Error("Unauthorized");
+    jwt.verify(token, process.env.JWT_SECRET);
+  } catch {
+    redirect("/admin/login");
+  }
+
   return (
     <main className="admin-page admin-page-wide">
       <section className="admin-panel" aria-labelledby="admin-project-title">
