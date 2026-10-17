@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PageFrame, ProjectCard } from "./components/site-chrome";
+import ResumeLink from "./components/resume-link";
 import { projects } from "./data/projects";
-import resume from "../data/resume.json";
 export default function HomePage() {
   return (
     <PageFrame section="home">
@@ -96,11 +96,7 @@ export default function HomePage() {
             </div>
           </article>
         </div>
-        {resume.available ? (
-          <a className="mi-text-link" href="/resume.pdf" target="_blank" rel="noreferrer">
-            Lihat resume <span aria-hidden="true">↗</span>
-          </a>
-        ) : null}
+        <ResumeLink />
       </section>
 
       <section

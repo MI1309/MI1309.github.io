@@ -47,21 +47,19 @@ Security notes for this flow:
 
 If you prefer a purely local workflow (no Actions): the admin server can write `data/archive.json` locally and you can push the change manually from the machine where the server runs.
 
-Deploying on Vercel (recommended static + serverless)
-- You can deploy the site to Vercel: static files will be served, and the `api/*.js` serverless functions handle login and archive update dispatch.
-- Steps:
-	1. Push repo to GitHub.
-	2. On Vercel dashboard, import the GitHub repo and deploy.
-	3. In Vercel Project Settings → Environment Variables, set:
-		 - `ADMIN_PASSWORD_HASH` (bcrypt hash of your admin password)
-		 - `JWT_SECRET` (random secret for signing tokens)
-		 - `GITHUB_REPO` (owner/repo) and `GITHUB_PAT` (PAT with `repo` scope) if you want auto-commit via Actions
-		 - Optional: `ADMIN_ROUTE` to define your hidden path (client-side only; the files will still be public if committed)
-	4. The JSX admin pages are available at `/admin/login/` and `/admin/project/`; the Express server exposes them through `/admin/<ADMIN_ROUTE>/login` and the authenticated `/admin/<ADMIN_ROUTE>/project`. The serverless endpoints are `/api/login`, `/api/archive`, `/api/admin-archive`, and `/api/logout`.
+Deploying the Next.js admin on Vercel
+1. Push the repository to GitHub and deploy it as a Next.js project on Vercel.
+2. In Vercel Storage, create a **public Blob store** and connect it to this project for Production. Connect Development too if you will test uploads locally through Vercel CLI.
+3. In Project Settings → Environment Variables, set `ADMIN_PASSWORD_HASH` (bcrypt hash) and `JWT_SECRET` (random signing secret) for Production.
+4. Redeploy after connecting storage or changing environment variables.
+5. Open `/admin/login/`; the project manager is at `/admin/project/`. Resume PDFs are stored at Vercel Blob and served through `/api/resume/file`.
 
-Security notes for Vercel:
-- Static admin pages are publicly accessible on static hosting, but contain no credentials; API endpoints still require the authenticated cookie. Host the admin UI separately if the page itself must remain private.
-- The serverless endpoints are protected by JWT cookie; callers cannot update archive without the token.
-- Keep `GITHUB_PAT` secret and configured only in Vercel env (or use GitHub Actions with repository dispatch as already provided).
+Vercel Blob uses the included Hobby allowance when within its monthly limits. The SDK authenticates with the connected store's Vercel OIDC configuration or `BLOB_READ_WRITE_TOKEN`.
+
+Security and persistence notes:
+- Keep the Blob store public only because the uploaded resume is intended to be publicly viewable. The Blob write credential stays server-side.
+- Resume uploads and deletion use Blob and do not require GitHub credentials.
+- Project archive edits still require `GITHUB_REPO` and `GITHUB_PAT` to dispatch the existing GitHub Action. Vercel's filesystem is not persistent, so archive changes cannot be saved locally by a deployed function.
+- API mutations remain protected by the admin JWT cookie.
 
 

@@ -1,49 +1,47 @@
-import fs from 'fs';
-import path from 'path';
+import { head, put, del, BlobNotFoundError } from '@vercel/blob';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
-const resumeFilePath = path.join(process.cwd(), 'public', 'resume.pdf');
-const resumeManifestPath = path.join(process.cwd(), 'data', 'resume.json');
+const resumePathname = 'portfolio/resume.pdf';
 const MAX_RESUME_BYTES = 3 * 1024 * 1024;
+
+function hasBlobCredentials() {
+  return Boolean(
+    process.env.BLOB_READ_WRITE_TOKEN ||
+      (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN),
+  );
+}
 
 function getToken(request) {
   return request.cookies.get('mi_auth')?.value;
 }
 
-function saveResumeLocally(update) {
-  const manifest = {
-    available: update.action === 'upload',
-    filename: 'resume.pdf',
-  };
-
-  fs.mkdirSync(path.dirname(resumeFilePath), { recursive: true });
-  fs.mkdirSync(path.dirname(resumeManifestPath), { recursive: true });
-
-  if (update.action === 'upload') {
-    const temporaryPdfPath = `${resumeFilePath}.tmp`;
-    fs.writeFileSync(temporaryPdfPath, Buffer.from(update.content, 'base64'));
-    fs.renameSync(temporaryPdfPath, resumeFilePath);
-  } else {
-    fs.rmSync(resumeFilePath, { force: true });
+export async function GET() {
+  if (!hasBlobCredentials()) {
+    return NextResponse.json(
+      { error: 'Vercel Blob belum terhubung ke project.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } },
+    );
   }
 
-  const temporaryManifestPath = `${resumeManifestPath}.tmp`;
-  fs.writeFileSync(temporaryManifestPath, JSON.stringify(manifest, null, 2));
-  fs.renameSync(temporaryManifestPath, resumeManifestPath);
-}
-
-export async function GET() {
   try {
-    const file = fs.readFileSync(resumeManifestPath, 'utf8');
-    return NextResponse.json(JSON.parse(file), {
-      headers: { 'Cache-Control': 'no-store' },
-    });
+    await head(resumePathname, { access: 'public' });
+    return NextResponse.json(
+      { available: true, filename: 'resume.pdf', url: '/api/resume/file' },
+      { headers: { 'Cache-Control': 'no-store' } },
+    );
   } catch (error) {
-    return NextResponse.json({ available: false, filename: 'resume.pdf' }, {
-      headers: { 'Cache-Control': 'no-store' },
-      status: 200,
-    });
+    if (error instanceof BlobNotFoundError) {
+      return NextResponse.json(
+        { available: false, filename: 'resume.pdf' },
+        { headers: { 'Cache-Control': 'no-store' } },
+      );
+    }
+    console.error('Failed to read resume metadata:', error);
+    return NextResponse.json(
+      { error: 'Status resume gagal dibaca dari Vercel Blob.' },
+      { status: 500, headers: { 'Cache-Control': 'no-store' } },
+    );
   }
 }
 
@@ -57,35 +55,18 @@ export async function POST(request) {
     }
 
     jwt.verify(token, jwtSecret);
+    if (!hasBlobCredentials()) {
+      return NextResponse.json(
+        { error: 'Vercel Blob belum terhubung. Buat Blob Store lalu hubungkan ke project dan environment Production.' },
+        { status: 503 },
+      );
+    }
+
     const { action, content } = await request.json();
 
     if (action === 'delete') {
-      const githubRepo = process.env.GITHUB_REPO;
-      const githubPat = process.env.GITHUB_PAT;
-      if (!githubRepo || !githubPat) {
-        saveResumeLocally({ action: 'delete' });
-        return NextResponse.json({ success: true, dispatched: false });
-      }
-
-      const payload = { resume: { action: 'delete' } };
-      const [owner, repo] = githubRepo.split('/');
-      const body = JSON.stringify({ event_type: 'update-resume', client_payload: payload });
-      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/dispatches`, {
-        method: 'POST',
-        headers: {
-          'User-Agent': 'mi1309-admin',
-          'Accept': 'application/vnd.github+json',
-          'Authorization': `token ${githubPat}`,
-          'Content-Type': 'application/json',
-        },
-        body,
-      });
-
-      if (!response.ok) {
-        return NextResponse.json({ error: 'Pembaruan resume gagal dikirim ke GitHub.' }, { status: 500 });
-      }
-
-      return NextResponse.json({ success: true, dispatched: true });
+      await del(resumePathname, { access: 'public' });
+      return NextResponse.json({ success: true, available: false });
     }
 
     if (action !== 'upload' || typeof content !== 'string') {
@@ -105,33 +86,25 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Berkas yang dipilih bukan PDF yang valid.' }, { status: 400 });
     }
 
-    const githubRepo = process.env.GITHUB_REPO;
-    const githubPat = process.env.GITHUB_PAT;
-    if (!githubRepo || !githubPat) {
-      saveResumeLocally({ action: 'upload', content });
-      return NextResponse.json({ success: true, dispatched: false });
-    }
-
-    const payload = { resume: { action: 'upload', content: pdf.toString('base64') } };
-    const [owner, repo] = githubRepo.split('/');
-    const body = JSON.stringify({ event_type: 'update-resume', client_payload: payload });
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/dispatches`, {
-      method: 'POST',
-      headers: {
-        'User-Agent': 'mi1309-admin',
-        'Accept': 'application/vnd.github+json',
-        'Authorization': `token ${githubPat}`,
-        'Content-Type': 'application/json',
-      },
-      body,
+    await put(resumePathname, pdf, {
+      access: 'public',
+      allowOverwrite: true,
+      addRandomSuffix: false,
+      contentType: 'application/pdf',
+      contentDisposition: 'inline; filename="resume.pdf"',
+      cacheControlMaxAge: 60,
     });
-
-    if (!response.ok) {
-      return NextResponse.json({ error: 'Pembaruan resume gagal dikirim ke GitHub.' }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, dispatched: true });
+    return NextResponse.json({
+      success: true,
+      available: true,
+      filename: 'resume.pdf',
+      url: '/api/resume/file',
+    });
   } catch (error) {
-    return NextResponse.json({ error: 'Perubahan resume gagal disimpan.' }, { status: 500 });
+    console.error('Failed to save resume to Vercel Blob:', error);
+    return NextResponse.json(
+      { error: 'Resume gagal disimpan ke Vercel Blob. Pastikan Blob Store sudah terhubung ke project.' },
+      { status: 500 },
+    );
   }
 }

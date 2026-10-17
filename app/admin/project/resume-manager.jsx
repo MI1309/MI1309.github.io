@@ -144,7 +144,7 @@ export default function ResumeManager() {
           <>
             <a
               className="admin-secondary admin-resume-preview"
-              href="/resume.pdf"
+              href="/api/resume/file"
               rel="noreferrer"
               target="_blank"
             >
