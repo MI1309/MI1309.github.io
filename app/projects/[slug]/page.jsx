@@ -9,7 +9,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
-  if (!project) return { title: "Project not found" };
+  if (!project) return { title: "Proyek tidak ditemukan" };
   return {
     title: project.name,
     description: project.summary,
@@ -32,11 +32,13 @@ export default async function ProjectDetailPage({ params }) {
       </Link>
       <header className="mi-page-intro mi-project-intro">
         <div className="mi-project-card-top">
-          <p className="mi-kicker">Case study · Japanese learning</p>
+          <p className="mi-kicker">Studi kasus · Pembelajaran bahasa Jepang</p>
           <span
             className={`mi-status mi-status-${project.status.toLowerCase().replaceAll(" ", "-")}`}
           >
-            {project.status}
+            {project.status === "In Progress"
+              ? "Sedang dikerjakan"
+              : project.status}
           </span>
         </div>
         <h1 className="mi-page-title">{project.name}</h1>
@@ -57,7 +59,7 @@ export default async function ProjectDetailPage({ params }) {
               target="_blank"
               rel="noreferrer"
             >
-              Demo <span aria-hidden="true">↗</span>
+              Pratinjau <span aria-hidden="true">↗</span>
             </a>
           ) : null}
         </div>
@@ -65,13 +67,13 @@ export default async function ProjectDetailPage({ params }) {
 
       <div className="mi-detail-grid">
         <section className="mi-detail-section" aria-labelledby="problem-title">
-          <p className="mi-kicker">01 · Context</p>
+          <p className="mi-kicker">01 · Konteks</p>
           <h2 id="problem-title">Masalah &amp; tujuan</h2>
           <p>{project.problem}</p>
           <p>{project.goal}</p>
         </section>
         <section className="mi-detail-section" aria-labelledby="role-title">
-          <p className="mi-kicker">02 · Contribution</p>
+          <p className="mi-kicker">02 · Kontribusi</p>
           <h2 id="role-title">Peran</h2>
           <p>{project.role}</p>
         </section>
@@ -79,7 +81,7 @@ export default async function ProjectDetailPage({ params }) {
           className="mi-detail-section"
           aria-labelledby="architecture-title"
         >
-          <p className="mi-kicker">03 · System</p>
+          <p className="mi-kicker">03 · Sistem</p>
           <h2 id="architecture-title">Arsitektur &amp; teknologi</h2>
           <ul className="mi-detail-list">
             {project.architecture.map((item) => (
@@ -93,7 +95,7 @@ export default async function ProjectDetailPage({ params }) {
           </ul>
         </section>
         <section className="mi-detail-section" aria-labelledby="features-title">
-          <p className="mi-kicker">04 · Source inventory</p>
+          <p className="mi-kicker">04 · Inventaris kode sumber</p>
           <h2 id="features-title">Fitur yang tercatat</h2>
           <ul className="mi-detail-list">
             {project.features.map((feature) => (
@@ -105,7 +107,7 @@ export default async function ProjectDetailPage({ params }) {
           className="mi-detail-section"
           aria-labelledby="challenges-title"
         >
-          <p className="mi-kicker">05 · Engineering</p>
+          <p className="mi-kicker">05 · Rekayasa</p>
           <h2 id="challenges-title">Tantangan teknis</h2>
           <p>{project.challenges}</p>
         </section>
@@ -113,7 +115,7 @@ export default async function ProjectDetailPage({ params }) {
           className="mi-detail-section"
           aria-labelledby="decisions-title"
         >
-          <p className="mi-kicker">06 · Trade-offs</p>
+          <p className="mi-kicker">06 · Pertimbangan desain</p>
           <h2 id="decisions-title">Keputusan desain</h2>
           <ul className="mi-detail-list">
             {project.decisions.map((decision) => (
@@ -122,7 +124,7 @@ export default async function ProjectDetailPage({ params }) {
           </ul>
         </section>
         <section className="mi-detail-section" aria-labelledby="outcomes-title">
-          <p className="mi-kicker">07 · Evidence</p>
+          <p className="mi-kicker">07 · Bukti</p>
           <h2 id="outcomes-title">Hasil yang dapat diverifikasi</h2>
           <ul className="mi-detail-list">
             {project.outcomes.map((outcome) => (
@@ -148,7 +150,7 @@ export default async function ProjectDetailPage({ params }) {
           </div>
         </section>
         <section className="mi-detail-section" aria-labelledby="next-title">
-          <p className="mi-kicker">08 · Next</p>
+          <p className="mi-kicker">08 · Selanjutnya</p>
           <h2 id="next-title">Rencana berikutnya</h2>
           <ul className="mi-detail-list">
             {project.nextSteps.map((step) => (

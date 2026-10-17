@@ -4,7 +4,7 @@ import archive from "../../data/archive.json";
 import { getProjectBySlug } from "../data/projects";
 
 export const metadata = {
-  title: "Projects",
+  title: "Proyek",
   description:
     "Proyek pengembangan web dan pembelajaran keamanan aplikasi oleh MI1309.",
   alternates: { canonical: "/projects/" },
@@ -39,7 +39,7 @@ const allProjects = archive.map((item, index) => {
     technologies:
       item.technologies?.length
         ? item.technologies
-        : [item.title.startsWith("Blog") ? "Article" : "Project"],
+        : [item.title.startsWith("Blog") ? "Artikel" : "Proyek"],
     detailUrl: caseStudy ? `/projects/${caseStudy.slug}/` : null,
     url: item.url,
   };
@@ -53,18 +53,18 @@ export default function ProjectsPage() {
           <Link className="mi-projects-back" href="/">
             <span aria-hidden="true">←</span> MI1309
           </Link>
-          <h1 className="mi-page-title">All Projects</h1>
+          <h1 className="mi-page-title">Semua Proyek</h1>
         </header>
         <div className="mi-archive-table-wrap">
           {allProjects.length ? (
             <table className="mi-archive-table">
               <thead>
                 <tr>
-                  <th scope="col">Year</th>
-                  <th scope="col">Project</th>
-                  <th scope="col">Made at</th>
-                  <th scope="col">Built with</th>
-                  <th scope="col">Link</th>
+                  <th scope="col">Tahun</th>
+                  <th scope="col">Proyek</th>
+                  <th scope="col">Dibuat di</th>
+                  <th scope="col">Teknologi</th>
+                  <th scope="col">Tautan</th>
                 </tr>
               </thead>
               <tbody>

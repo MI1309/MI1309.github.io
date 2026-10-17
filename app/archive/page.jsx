@@ -2,14 +2,14 @@ import archive from "../../data/archive.json";
 import { PageFrame } from "../components/site-chrome";
 const projects = archive;
 export const metadata = {
-  title: "Project Archive",
+  title: "Arsip Proyek",
   description:
     "Arsip proyek, eksperimen, dan tulisan Muhammad Imron tentang pengembangan web dan keamanan siber.",
   alternates: {
     canonical: "/archive/",
   },
   openGraph: {
-    title: "Project Archive | Muhammad Imron",
+    title: "Arsip Proyek | Muhammad Imron",
     description:
       "Arsip proyek, eksperimen, dan tulisan Muhammad Imron tentang pengembangan web dan keamanan siber.",
     url: "/archive/",
@@ -21,7 +21,7 @@ function getYear(project) {
   return "—";
 }
 function getTechnologies(project) {
-  return [project.title.startsWith("Blog") ? "Article" : "Project"];
+  return [project.title.startsWith("Blog") ? "Artikel" : "Proyek"];
 }
 function getLinkLabel(url) {
   try {
@@ -35,8 +35,8 @@ export default function ArchivePage() {
     <PageFrame section="archive">
       <div className="mi-archive-page">
         <header className="mi-page-intro">
-          <p className="mi-kicker">Projects &amp; experiments</p>
-          <h1 className="mi-page-title">Project Archive</h1>
+          <p className="mi-kicker">Proyek &amp; eksperimen</p>
+          <h1 className="mi-page-title">Arsip Proyek</h1>
           <p>Catatan proyek yang dikelola melalui panel admin.</p>
         </header>
         <div className="mi-archive-table-wrap">
@@ -48,10 +48,10 @@ export default function ArchivePage() {
             <table className="mi-archive-table">
               <thead>
                 <tr>
-                  <th scope="col">Year</th>
-                  <th scope="col">Project</th>
-                  <th scope="col">Built with</th>
-                  <th scope="col">Link</th>
+                  <th scope="col">Tahun</th>
+                  <th scope="col">Proyek</th>
+                  <th scope="col">Teknologi</th>
+                  <th scope="col">Tautan</th>
                 </tr>
               </thead>
               <tbody>

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 export const dynamic = "force-static";
-export const alt = "MI1309, portfolio Muhammad Imron";
+export const alt = "MI1309, portofolio Muhammad Imron";
 export const size = {
   width: 1200,
   height: 630,
@@ -31,16 +31,16 @@ export default function OpenGraphImage() {
           textTransform: "uppercase",
         }}
       >
-        MI1309 / PORTFOLIO
+        MI1309 / PORTOFOLIO
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
         <div style={{ fontSize: 88, fontWeight: 700 }}>MI1309</div>
         <div style={{ color: "#c7f36b", fontSize: 34 }}>
-          Web development · Cybersecurity learning
+          Pengembangan web · Pembelajaran keamanan siber
         </div>
       </div>
       <div style={{ display: "flex", color: "#a4aea6", fontSize: 23 }}>
-        Build. Learn. Secure.
+        Bangun. Belajar. Amankan.
       </div>
     </div>,
     { ...size },

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-const roles = ["Web Development", "Cyber security", "Japanese Language"];
+const roles = ["Pengembangan Web", "Keamanan Siber", "Bahasa Jepang"];
 export function RoleCycler() {
   useEffect(() => {
     const text = document.getElementById("role-cycler");
@@ -36,11 +36,11 @@ export function RoleCycler() {
   return (
     <>
       <h2 className="hero-role" aria-hidden="true">
-        <span id="role-cycler">Web Development</span>
+        <span id="role-cycler">Pengembangan Web</span>
         <span className="cursor">|</span>
       </h2>
       <span className="sr-only">
-        Web development, cybersecurity, and Japanese learning
+        Pengembangan web, keamanan siber, dan pembelajaran bahasa Jepang
       </span>
     </>
   );

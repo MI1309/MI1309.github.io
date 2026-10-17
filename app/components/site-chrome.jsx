@@ -4,16 +4,16 @@ import { RoleCycler } from "./role-cycler";
 import ScrollEffects from "../scroll-effects";
 
 const navigationItems = [
-  { id: "about", label: "About", href: "/about/", homeHref: "#about" },
+  { id: "about", label: "Tentang", href: "/about/", homeHref: "#about" },
   {
     id: "experience",
-    label: "Experience",
+    label: "Pengalaman",
     href: "/#experience",
     homeHref: "#experience",
   },
   {
     id: "projects",
-    label: "Projects",
+    label: "Proyek",
     href: "/projects/",
     homeHref: "#projects",
   },
@@ -38,7 +38,7 @@ export function SiteSidebar({ section }) {
             </Link>
           )}
           <RoleCycler />
-          <p className="hero-quote">Build & testing software.</p>
+          <p className="hero-quote">Membangun & menguji perangkat lunak.</p>
         </div>
         <nav className="side-nav mi-nav" aria-label="Navigasi utama">
           {navigationItems.map((item) => {
@@ -99,7 +99,6 @@ export function SiteSidebar({ section }) {
 export function SiteFooter() {
   return (
     <footer className="mi-footer">
-      <span>MI1309 · Build. Learn. Secure.</span>
       <span>© {new Date().getFullYear()} Muhammad Imron</span>
     </footer>
   );

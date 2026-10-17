@@ -4,10 +4,10 @@ export default function NotFound() {
   return (
     <PageFrame section="not-found">
       <section className="mi-empty-page">
-        <p className="mi-kicker">404 · Not found</p>
+        <p className="mi-kicker">404 · Tidak ditemukan</p>
         <h1 className="mi-page-title">Halaman ini tidak ditemukan.</h1>
         <Link className="mi-button mi-button-primary" href="/">
-          Kembali ke Home
+          Kembali ke Beranda
         </Link>
       </section>
     </PageFrame>

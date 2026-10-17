@@ -22,7 +22,7 @@ export default function AdminLoginForm() {
       const result = await response.json();
 
       if (!response.ok) {
-        setMessage(result.error || "Login gagal.");
+        setMessage(result.error || "Gagal masuk.");
         return;
       }
 
@@ -38,7 +38,7 @@ export default function AdminLoginForm() {
 
   return (
     <form className="admin-form" onSubmit={handleSubmit}>
-      <label htmlFor="admin-password">Password</label>
+      <label htmlFor="admin-password">Kata sandi</label>
       <input
         autoComplete="current-password"
         id="admin-password"

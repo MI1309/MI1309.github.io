@@ -3,7 +3,7 @@
 		"slug": "jbook",
 		"title": "JBook",
 		"description": "Aplikasi belajar bahasa Jepang yang menyatukan materi, latihan, dan progres belajar dalam satu proyek dengan client web dan mobile.",
-		"madeAt": "Personal project",
+		"madeAt": "Proyek pribadi",
 		"technologies": [
 			"Django",
 			"Django Ninja",

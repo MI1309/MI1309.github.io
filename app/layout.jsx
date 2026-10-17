@@ -3,10 +3,10 @@ import "../css/portfolio.css";
 const siteUrl = "https://mi1309.github.io";
 export const metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "MI1309 | Muhammad Imron", template: "%s | MI1309" },
+  title: { default: "Portofolio MI1309 | Muhammad Imron", template: "%s | MI1309" },
   description:
-    "Portfolio Muhammad Imron: pengembangan aplikasi web, pembelajaran cybersecurity, dan proyek JBook.",
-  applicationName: "MI1309 Portfolio",
+    "Portofolio Muhammad Imron: pengembangan aplikasi web, pembelajaran keamanan siber, dan proyek JBook.",
+  applicationName: "Portofolio MI1309",
   authors: [{ name: "Muhammad Imron", url: siteUrl }],
   creator: "Muhammad Imron",
   alternates: {
@@ -17,14 +17,14 @@ export const metadata = {
     locale: "id_ID",
     url: siteUrl,
     siteName: "MI1309",
-    title: "MI1309 | Muhammad Imron",
+    title: "Portofolio MI1309 | Muhammad Imron",
     description:
-      "Pengembangan web, pembelajaran cybersecurity, dan proyek JBook.",
+      "Pengembangan web, pembelajaran keamanan siber, dan proyek JBook.",
   },
   twitter: {
     card: "summary",
-    title: "MI1309 | Muhammad Imron",
-    description: "Pengembangan web dan pembelajaran cybersecurity.",
+    title: "Portofolio MI1309 | Muhammad Imron",
+    description: "Pengembangan web dan pembelajaran keamanan siber.",
     images: ["/opengraph-image.png"],
   },
   robots: {
@@ -39,7 +39,7 @@ export const metadata = {
     },
   },
   icons: {
-    icon: "/images/profile-portrait.svg",
+    icon: "/favicon.svg",
   },
 };
 export default function RootLayout({ children }) {

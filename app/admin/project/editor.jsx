@@ -178,13 +178,13 @@ export default function AdminProjectEditor() {
             Tambah proyek
           </button>
           <button className="admin-secondary" onClick={logout} type="button">
-            Logout
+            Keluar
           </button>
         </div>
       </div>
       {draft ? (
         <form className="admin-project-form" onSubmit={applyDraft}>
-          <h2>{editingIndex === null ? "Tambah proyek" : "Edit proyek"}</h2>
+          <h2>{editingIndex === null ? "Tambah proyek" : "Ubah proyek"}</h2>
           <div className="admin-project-fields">
             <label>
               Nama proyek
@@ -204,10 +204,10 @@ export default function AdminProjectEditor() {
               />
             </label>
             <label>
-              Made at
+              Dibuat di
               <input
                 onChange={(event) => updateDraft("madeAt", event.target.value)}
-                placeholder="Personal project"
+                placeholder="Proyek pribadi"
                 value={draft.madeAt}
               />
             </label>
@@ -290,7 +290,7 @@ export default function AdminProjectEditor() {
                 onClick={() => startEditing(project, index)}
                 type="button"
               >
-                Edit
+                Ubah
               </button>
               <button
                 className="admin-secondary admin-danger"

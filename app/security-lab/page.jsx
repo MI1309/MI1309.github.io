@@ -1,15 +1,15 @@
 import { PageFrame } from "../components/site-chrome";
 export const metadata = {
-  title: "Security Lab",
+  title: "Laboratorium Keamanan",
   description:
-    "Catatan keamanan defensif dan write-up latihan yang akan dipublikasikan setelah dapat diverifikasi.",
+    "Catatan keamanan defensif dan dokumentasi latihan yang akan dipublikasikan setelah dapat diverifikasi.",
   alternates: { canonical: "/security-lab/" },
 };
 const labSections = [
   {
-    title: "Linux hardening",
+    title: "Penguatan keamanan Linux",
     description:
-      "Catatan konfigurasi, baseline, perubahan, dan hasil verifikasi pada lingkungan yang diizinkan.",
+      "Catatan konfigurasi dasar, perubahan, dan hasil verifikasi pada lingkungan yang diizinkan.",
   },
   {
     title: "Analisis log",
@@ -17,20 +17,21 @@ const labSections = [
       "Contoh log yang aman dipublikasikan, hipotesis deteksi, indikator, dan langkah triase yang dapat diulang.",
   },
   {
-    title: "CTF write-ups",
+    title: "Catatan latihan CTF",
     description:
-      "Write-up latihan yang boleh dibagikan, dengan ruang lingkup, proses, dan batasan yang dinyatakan jelas.",
+      "Catatan latihan yang boleh dibagikan, dengan ruang lingkup, proses, dan batasan yang dinyatakan jelas.",
   },
 ];
 export default function SecurityLabPage() {
   return (
     <PageFrame section="security-lab">
       <header className="mi-page-intro">
-        <p className="mi-kicker">Practice, document, verify</p>
-        <h1 className="mi-page-title">Security Lab</h1>
+        <p className="mi-kicker">Berlatih, mendokumentasikan, memverifikasi</p>
+        <h1 className="mi-page-title">Laboratorium Keamanan</h1>
         <p>
-          Ruang untuk dokumentasi Linux hardening, analisis log, dan latihan CTF
-          yang boleh dipublikasikan. Belum ada temuan atau write-up yang
+          Ruang untuk dokumentasi penguatan keamanan Linux, analisis log, dan
+          latihan CTF
+          yang boleh dipublikasikan. Belum ada temuan atau catatan latihan yang
           dipublikasikan di halaman ini.
         </p>
       </header>
