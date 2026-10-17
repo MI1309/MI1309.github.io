@@ -3,21 +3,47 @@ import path from 'path';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 
-const resumePath = path.join(process.cwd(), 'data', 'resume.json');
+const resumeFilePath = path.join(process.cwd(), 'public', 'resume.pdf');
+const resumeManifestPath = path.join(process.cwd(), 'data', 'resume.json');
 const MAX_RESUME_BYTES = 3 * 1024 * 1024;
 
 function getToken(request) {
   return request.cookies.get('mi_auth')?.value;
 }
 
+function saveResumeLocally(update) {
+  const manifest = {
+    available: update.action === 'upload',
+    filename: 'resume.pdf',
+  };
+
+  fs.mkdirSync(path.dirname(resumeFilePath), { recursive: true });
+  fs.mkdirSync(path.dirname(resumeManifestPath), { recursive: true });
+
+  if (update.action === 'upload') {
+    const temporaryPdfPath = `${resumeFilePath}.tmp`;
+    fs.writeFileSync(temporaryPdfPath, Buffer.from(update.content, 'base64'));
+    fs.renameSync(temporaryPdfPath, resumeFilePath);
+  } else {
+    fs.rmSync(resumeFilePath, { force: true });
+  }
+
+  const temporaryManifestPath = `${resumeManifestPath}.tmp`;
+  fs.writeFileSync(temporaryManifestPath, JSON.stringify(manifest, null, 2));
+  fs.renameSync(temporaryManifestPath, resumeManifestPath);
+}
+
 export async function GET() {
   try {
-    const file = fs.readFileSync(resumePath, 'utf8');
+    const file = fs.readFileSync(resumeManifestPath, 'utf8');
     return NextResponse.json(JSON.parse(file), {
       headers: { 'Cache-Control': 'no-store' },
     });
   } catch (error) {
-    return NextResponse.json({ error: 'Status resume tidak dapat dibaca.' }, { status: 500 });
+    return NextResponse.json({ available: false, filename: 'resume.pdf' }, {
+      headers: { 'Cache-Control': 'no-store' },
+      status: 200,
+    });
   }
 }
 
@@ -37,8 +63,10 @@ export async function POST(request) {
       const githubRepo = process.env.GITHUB_REPO;
       const githubPat = process.env.GITHUB_PAT;
       if (!githubRepo || !githubPat) {
+        saveResumeLocally({ action: 'delete' });
         return NextResponse.json({ success: true, dispatched: false });
       }
+
       const payload = { resume: { action: 'delete' } };
       const [owner, repo] = githubRepo.split('/');
       const body = JSON.stringify({ event_type: 'update-resume', client_payload: payload });
@@ -52,9 +80,11 @@ export async function POST(request) {
         },
         body,
       });
+
       if (!response.ok) {
         return NextResponse.json({ error: 'Pembaruan resume gagal dikirim ke GitHub.' }, { status: 500 });
       }
+
       return NextResponse.json({ success: true, dispatched: true });
     }
 
@@ -78,6 +108,7 @@ export async function POST(request) {
     const githubRepo = process.env.GITHUB_REPO;
     const githubPat = process.env.GITHUB_PAT;
     if (!githubRepo || !githubPat) {
+      saveResumeLocally({ action: 'upload', content });
       return NextResponse.json({ success: true, dispatched: false });
     }
 
