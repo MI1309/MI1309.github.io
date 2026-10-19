@@ -27,10 +27,12 @@ export default function HomePage() {
           yang dapat ditinjau dan dipelajari kembali.
         </p>
         <p>
-          Di luar itu, saya belajar bahasa Jepang dan memiliki sertifikat JLPT
-          N5 dan N4. JBook adalah proyek pembelajaran bahasa Jepang yang saya
-          tampilkan sebagai studi kasus berdasarkan dokumentasi repositori
-          proyek.
+          Di luar itu, saya aktif mempelajari bahasa Jepang untuk pemula dan
+          memiliki sertifikat JLPT N5 dan N4. Saya juga menyiapkan materi dan
+          latihan soal JLPT untuk membantu proses belajar yang lebih terarah,
+          terutama untuk level awal hingga menengah. JBook adalah proyek
+          pembelajaran bahasa Jepang yang saya tampilkan sebagai studi kasus
+          berdasarkan dokumentasi repositori proyek.
         </p>
         <p className="mi-home-links">
           <Link href="/about/">Profil lengkap</Link>
@@ -48,16 +50,12 @@ export default function HomePage() {
         </div>
         <div className="mi-experience-list">
           <article className="mi-experience-item">
-            <div className="mi-experience-meta">YYYY — YYYY</div>
+            <div className="mi-experience-meta">2025 — 2026</div>
             <div className="mi-experience-body">
-              <a href="#"><h3>Pengembangan web</h3></a>
+              <h3>Pembelajaran bahasa Jepang &amp; JLPT</h3>
               <ul>
                 <li>
-                  Mengembangkan aplikasi web melalui proyek yang dapat ditinjau pada repositori JBook.
-                </li>
-                <li>
-                  JBook menjadi studi kasus utama, detail implementasi yang
-                  terverifikasi tersedia di halaman proyek.
+                  Belajar bahasa Jepang dan memperoleh sertifikat JLPT N5 dan N4, serta menyiapkan latihan soal dan materi pembelajaran untuk pemula.
                 </li>
               </ul>
             </div>
@@ -74,12 +72,15 @@ export default function HomePage() {
             </div>
           </article>
           <article className="mi-experience-item">
-            <div className="mi-experience-meta">2025 — 2026</div>
+            <div className="mi-experience-meta">2025</div>
             <div className="mi-experience-body">
-              <h3>Pembelajaran bahasa Jepang</h3>
+              <a href="https://github.com/MI1309/lsp_distrozone" target="_blank" rel="noreferrer"><h3>Ujian LSP P1</h3></a>
               <ul>
                 <li>
-                  Belajar bahasa Jepang dan memiliki sertifikat JLPT N5 dan N4.
+                  Saya mengikuti ujian LSP dan dinyatakan kompeten di bidang Web Development.
+                </li>
+                <li>
+                  Mengembangkan aplikasi web melalui proyek yang dapat ditinjau pada repositori lsp_distrozone.
                 </li>
               </ul>
             </div>
